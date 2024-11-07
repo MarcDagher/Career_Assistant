@@ -1,7 +1,109 @@
-<h1 align="center"> 🎓PersonaBot: A Retrieval-Augmented Agentic Career Guide</h1>
+<h1 align="center"> 🎓Career Assistant: A Retrieval-Augmented Agentic Career Guide</h1>
 
-**PersonaBot** is an AI tool designed to help with career decision-making. It assesses user personality and skills through interactive interviews and recommends suitable career paths using a comprehensive knowledge graph based on the RIASEC model.
+**Career Assistant** is an AI tool designed to help with career decision-making. It assesses user personality and skills through interactive interviews and recommends suitable career paths using a comprehensive knowledge graph based on the RIASEC model.
 
+<h3>⚙️To use the app locally follow these <strong>step by step</strong> instructions</h3>
+
+<li><strong>Step 1:</strong> Create a .env file in your root directory</li>
+
+</br>
+
+<li><strong>Step 2:</strong> Create a virtual environment and install the necessary dependencies</li>    
+  
+  ```
+    # Create virtual environment
+    python -m venv venv
+
+    # Activate it (Windows)
+    .\venv\Scripts\activate
+
+    # Activate it (Mac/Linux)
+    source venv/bin/activate
+
+    # Install requirements
+    pip install -r requirements.txt
+   ```
+
+<li><strong>Step 3:</strong> Setup Groq for LLMs:
+  <ol>
+    <li>Create and login to your account in Groq: https://console.groq.com/keys <br/></li>
+    <li>Go to API Keys and create an api key: https://console.groq.com/keys <br/></li>
+    <li>Copy and then add this api key to your .env as: GROQ_API_KEY = "your new api key..." <br/></li>
+  </ol>
+</li>
+
+<br/>
+
+<li><strong>Step 4:</strong> View the CSV files we will use to add data into Neo4j:</li>
+I created graph_functions.py in Knowledge_Graph/CSV_to_Knowledge_Graph in order to populate the data into the Neo4j graph. 
+To populate the graph with our data, we need the CSVs in a specific format. In Knowledge_Graph/Combined CSVs we have the original CSVs from ONet. They need to be in a specific format for us to use them with graph_functions.py. The formatted CSVs are ready and you can see them in Knowledge_Graph/Formatted CSVs. But, if you want to see how I formatted them check: Knowledge_Graph/CSV_to_Knowledge_Graph/format_csvs.ipynb
+
+<br/> <br/>
+
+<li><strong>Step 6:</strong> Setup Neo4j:
+  <ol>
+    <li>To read about the installation details go to: https://neo4j.com/docs/desktop-manual/current/installation/download-installation/</li>
+    <li>To install Neo4j desktop go to: https://neo4j.com/deployment-center/?desktop-gdb</li>
+    <li>Search for Neo4j Desktop (It should be the 3rd box)</li> 
+    <li>Choose your os (ex: I'm on windows) and click download</li> 
+    <li>Fill in your info and click download desktop</li> 
+    <li>You should see an activation key pop-up, copy it. After download is complete, insert the Software Key when prompted to do so</li> 
+    <li>Open Neo4j's Setup.</li> 
+    <li>Choose installation options, click next, then click install</li> 
+    <li>Click finish and open Neo4j Desktop</li> 
+    <li>When Neo4j desktop opens, click on +New to create a new project</li> 
+    <li>When the new project shows up, click on +Add on the top right then choose Local DBMS</li> 
+    <li>Call it whatever you want, I will name it "Career_Assistant_KG" and write a password then click on create</li> 
+    <li>Click on start to start the Knowledge Graph</li> 
+    <li>Go to your .env file and add 3 variables: 
+      <ol>
+        <li>NEO4J_URI = 'bolt://localhost:7687' or another port of your choosing. make sure to use bolt.</li>
+        <li>NEO4J_USERNAME usually is "neo4j" by default.</li>
+        <li>NEO4J_PASSWORD = "the password you set earlier"</li>
+      </ol>
+    </li>
+    <br/>
+    <strong>*Very Important:*</strong> 
+    <li>Go to Neo4j desktop, hover over your project, click on the settings (...) next to open, click on Open Folder, click on Plugins, this should take you to a local folder called plugins.</li>
+    <li>Navigate to the parent folder of plugins, you should see bin, certificates...  labs. Go inside labs, copy the file apoc-5.24.0-core.jar and paste it in the plugins folder</li>
+    <li>Then go back to the parent folder, go to conf, then neo4j.conf. Open it as a txt file, cntrl-f, search for dbms.security.procedures.unrestricted and assign it to apoc.* (dbms.security.procedures.unrestricted=apoc.*)</li>
+  </ol>
+</li>
+
+</br>
+
+<li><strong>Step 7:</strong> Populate the graph with data from formatted CSVs:
+  <ol>
+    <li>To populate the graph go to Knowledge_Graph/CSV_to_Knowledge_Graph/create_graph_from_structured_data.ipynb.</li>
+    <li>Run the cells to add the data.</br> 
+    NOTE: in create_graph_from_structured_data you can see the CSV files that we could add. However, we only added the first 150 rows of one CSV file due to the usage limits of the Groq's free version. Ideally, we would want to add all the data which would result in a graph pf around 90,000 relations between nodes. (This will also add latency) </li>
+    <li> Extra step: Go to Neo4j Desktop, hover over your new Project/DB, click on Open to open a browser. Inside the browser click on the first cell next to neo4j$ and write: Match (n) return n limit 150 (to view the 150 relations we have created).</li>
+  </ol>
+</li>
+
+</br>
+
+<li><strong>Step 8:</strong> Langsmith
+  <ol>
+    <li>go to langsmith.com and sign in </li> 
+    <li>click create project </li>
+    <li>you should see Set up observability </li>
+    <li>click generate api key </li>
+    <li>copy the box from number 3 and paste it in your .env file </li>
+    <li>click back (you shouldn't see any changes until we run an llm call) </li>    
+  </ol>
+</li>
+
+</br>
+
+<li><strong>Step 9:</strong> To launch the app:<br/>
+  <ol>
+    <li> run this in the terminal: python Agent_App/fast_api_server.py </li>
+    <li> run this in the terminal: streamlit run Agent_App/streamlit_app.py </li>
+    After you interact with the LLM, you should be able to see the tracing in langsmith "Tracing Projects" which is found in the left side-bar
+  </ol>
+</li>
+</br>
 <h3>🕸️Knowledge Graph</h3>
 <p>To ensure accurate personality assessment and job recommendations, the system uses a <a href="https://neo4j.com/">Neo4j</a> knowledge graph based on the RIASEC personality model and the <a href="https://www.onetonline.org/find/descriptor/browse/1.C">O*NET dataset</a> to match user traits with suitable career paths. The system asks users a series of questions to analyze their personality traits and then queries a knowledge graph to suggest suitable occupations based on these traits. The key dataset used to create this knowledge graph is the O*NET Dataset, an extensive resource developed by the U.S. Department of Labor to provide detailed and comprehensive information about various occupations.</p>
 
