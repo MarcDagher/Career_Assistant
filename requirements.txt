@@ -1,0 +1,11 @@
+pandas
+python-dotenv
+langchain_groq
+deepeval
+uvicorn
+fastapi
+langgraph
+neo4j
+streamlit
+networkx
+plotly
