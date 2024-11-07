@@ -2,7 +2,7 @@
 
 **Career Assistant** is an AI tool designed to help with career decision-making. It assesses user personality and skills through interactive interviews and recommends suitable career paths using a comprehensive knowledge graph based on the RIASEC model.
 
-<h3>⚙️To use the app locally follow these <strong>step by step</strong> instructions</h3>
+<h2>⚙️To use the app locally follow these <strong>step by step</strong> instructions</h2>
 
 <li><strong>Step 1:</strong> Create a .env file in your root directory</li>
 
@@ -40,7 +40,7 @@ To populate the graph with our data, we need the CSVs in a specific format. In K
 
 <br/> <br/>
 
-<li><strong>Step 6:</strong> Setup Neo4j:
+<li><strong>Step 5:</strong> Setup Neo4j:
   <ol>
     <li>To read about the installation details go to: https://neo4j.com/docs/desktop-manual/current/installation/download-installation/</li>
     <li>To install Neo4j desktop go to: https://neo4j.com/deployment-center/?desktop-gdb</li>
@@ -72,7 +72,7 @@ To populate the graph with our data, we need the CSVs in a specific format. In K
 
 </br>
 
-<li><strong>Step 7:</strong> Populate the graph with data from formatted CSVs:
+<li><strong>Step 6:</strong> Populate the graph with data from formatted CSVs:
   <ol>
     <li>To populate the graph go to Knowledge_Graph/CSV_to_Knowledge_Graph/create_graph_from_structured_data.ipynb.</li>
     <li>Run the cells to add the data.</br> 
@@ -83,7 +83,7 @@ To populate the graph with our data, we need the CSVs in a specific format. In K
 
 </br>
 
-<li><strong>Step 8:</strong> Langsmith
+<li><strong>Step 7:</strong> Langsmith
   <ol>
     <li>go to langsmith.com and sign in </li> 
     <li>click create project </li>
@@ -96,15 +96,17 @@ To populate the graph with our data, we need the CSVs in a specific format. In K
 
 </br>
 
-<li><strong>Step 9:</strong> To launch the app:<br/>
+<li><strong>Step 8:</strong> To launch the app:<br/>
   <ol>
     <li> run this in the terminal: python Agent_App/fast_api_server.py </li>
     <li> run this in the terminal: streamlit run Agent_App/streamlit_app.py </li>
     After you interact with the LLM, you should be able to see the tracing in langsmith "Tracing Projects" which is found in the left side-bar
   </ol>
 </li>
+
 </br>
-<h3>🕸️Knowledge Graph</h3>
+
+<h2>🕸️Knowledge Graph</h2>
 <p>To ensure accurate personality assessment and job recommendations, the system uses a <a href="https://neo4j.com/">Neo4j</a> knowledge graph based on the RIASEC personality model and the <a href="https://www.onetonline.org/find/descriptor/browse/1.C">O*NET dataset</a> to match user traits with suitable career paths. The system asks users a series of questions to analyze their personality traits and then queries a knowledge graph to suggest suitable occupations based on these traits. The key dataset used to create this knowledge graph is the O*NET Dataset, an extensive resource developed by the U.S. Department of Labor to provide detailed and comprehensive information about various occupations.</p>
 
 To populate the knowledge graph with the extracted data from O*Net, we followed a specific <a href="https://github.com/MarcDagher/PersonaBot/blob/main/Knowledge_Graph/CSV_to_Knowledge_Graph/format_csvs.ipynb">CSV format</a>. The CSV format contains three columns: “Node_1,” “Node_2,” and “Relation.” Every node should have a “label,” “property,” and “identifier,” while every relation should have a “label” and optional “properties.” An example row in the CSV would look like this:
@@ -114,7 +116,7 @@ To populate the knowledge graph with the extracted data from O*Net, we followed 
 If you want to check out how we formatted our CSVs, go to this <a href="https://github.com/MarcDagher/PersonaBot/blob/main/Knowledge_Graph/CSV_to_Knowledge_Graph/create_graph_from_structured_data.ipynb">notebook</a>.
 We created specific <a href="https://github.com/MarcDagher/PersonaBot/blob/main/Knowledge_Graph/CSV_to_Knowledge_Graph/graph_functions.py">graph functions</a> to add the data into the knowledge graph. If you want to use these functions, make sure to have a CSV file following this format.
 
-<h3>🤖Agent</h3>
+<h2>🤖Agent</h2>
 
 The system we built carries the following tasks:
 <li>Conducts a personality test</li>
@@ -125,7 +127,7 @@ The system we built carries the following tasks:
 <li>Answers any questions</li><br>
 To orchestrate this <a href="https://github.com/MarcDagher/PersonaBot/blob/main/Images/agent.jpg">workflow</a> we used <a href="https://www.langchain.com/langgraph">LangGraph</a> and <a href="https://console.groq.com/docs/models">Groq</a>'s llama-3.1-70b-versatile for its tool-use capabilities.
 
-<h3>⚙️Prompt Engineering</h3>
+<h2>⚙️Prompt Engineering</h2>
 
 In designing prompts for the agent, we built each step in the workflow to match specific tasks and improve response accuracy. Since the system’s workflow contains multiple steps, we separated each of them into unique tasks with specific prompts. This approach led to smaller prompts, less tasks on an individual LLM, and fewer hallucinations throughout the system, resulting in more accurate results.
 
@@ -135,7 +137,7 @@ To address these issues, we developed structured task completion prompts inspire
 
 You can check the prompts <a href="https://github.com/MarcDagher/PersonaBot/blob/main/Agent_App/FastAPI_Sub_Folder/Helpers/prompts.py">here</a>
 
-<h3>📝LLM Evaluation</h3>
+<h2>📝LLM Evaluation</h2>
 
 We generated <a href="https://github.com/MarcDagher/PersonaBot/blob/main/LLM_Evaluation/gpt_synthetic_data.csv">synthetic data</a> to evaluate the LLM's generation by simulating typical user-agent conversations with GPT-4o mini, creating a ground truth dataset formatted as a CSV file with three columns: conversation, extracted data, and output. This dataset was limited to 22 rows due to LLM rate limits and manually reviewed for applicability. <br>
 
@@ -146,7 +148,7 @@ We used <a href="https://docs.confident-ai.com/">DeepEval</a>, an evaluation fra
 The agent performed well, scoring 90-95% across all metrics. Additionally, we used LangSmith for continuous monitoring of the agent's workflows, which streamlined tracking, debugging, and optimizing AI models, ensuring consistent, high-quality outputs from the LLM.
 <a href="https://github.com/MarcDagher/PersonaBot/blob/main/LLM_Evaluation/eval.ipynb">This</a> is the link to the evaluation notebook.
 
-<h3>🎬Demo</h3>
+<h2>🎬Demo</h2>
 In this demo, you will see the interaction with the conversational agent, as well as a visualization of the queried data from the knowledge graph and the data that the agent extracted from it. We built the app using FastAPI and Streamlit. <br><br>
 
 ![Demo](https://github.com/MarcDagher/PersonaBot/blob/main/Images_and_Videos/demo%20(1).gif)
