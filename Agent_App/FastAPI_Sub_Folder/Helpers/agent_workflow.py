@@ -1,6 +1,6 @@
 # LangChain
 from langchain_core.tools import tool
-from langchain.graphs import Neo4jGraph
+from langchain_community.graphs import Neo4jGraph
 from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, ToolMessage
 
 # LangGraph
@@ -68,7 +68,7 @@ class Agent:
         self.tools = {t.name: t for t in tools} # Save the tools' names that can be used
         self.model = model.bind_tools(tools)
 
-    ## Helper function that returns the cyphers written before. This is used when calling the LLM
+    ## Helper function that returns the previously written cyphers. This is used when calling the LLM
     def get_previous_cyphers(self, state: AgentState):
         cyphers_list = ""
         
