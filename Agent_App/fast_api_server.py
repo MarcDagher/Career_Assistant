@@ -31,8 +31,8 @@ graph = Neo4jGraph()
 ##############################
 # Initialize model and agent #
 ##############################
-model = ChatGroq(temperature=0.7, model_name="llama-3.1-70b-versatile", max_retries=5, verbose=True)
-# model = ChatGroq(temperature=0.7, model_name="llama3-70b-8192")
+# model = ChatGroq(temperature=0.7, model_name="llama-3.1-70b-versatile", max_retries=5, verbose=True)
+model = ChatGroq(temperature=0.7, model_name="llama-3.2-90b-vision-preview", max_retries=5, verbose=True)
 agent = agent_workflow.Agent(
     model=model, 
     tools=[agent_workflow.query_graph], 
