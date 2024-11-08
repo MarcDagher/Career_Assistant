@@ -76,7 +76,7 @@ async def call_agent(request: Messages):
         print("-----------------")
         print(e)
         print("-----------------")
-        if e.response.status_code == 400: return "Agent failed to call the function. Try to better explain what you want."
+        if e.response.status_code == 400: return "Groq: Context length exceeded."
         elif e.response.status_code == 422: return "Unprocessable Entry"
         elif e.response.status_code == 429: return "Rate limit reached for model"
         elif e.response.status_code == 500: return "Internal Server Error"
